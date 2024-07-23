@@ -5,31 +5,32 @@ on:
     branches: [main]
 
 jobs:
-  runs-on: ubuntu-latest
-  steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+  test_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Setup python
-      uses: actions/setup-python@v5.1.1
-      with:
-        python-version: 3.11
+      - name: Setup python
+        uses: actions/setup-python@v5.1.1
+        with:
+          python-version: 3.11
 
-    - name: Install requirements
-      run: pip3 install -r requirements.txt
+      - name: Install requirements
+        run: pip3 install -r requirements.txt
 
-    - name: lint
-      run: |
-        flake8 *.py
-        pylint --disable=C0415 *.py
+      - name: lint
+        run: |
+          flake8 *.py
+          pylint --disable=C0415 *.py
 
-    - name: SSH Remote Commands
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: ${{ secrets.NETHERLAND_HOST }}
-        username: ${{ secrets.NETHERLAND_USERNAME }}
-        password: ${{ secrets.NETHERLAND_PASSWORD }}
-        port: ${{ secrets.NETHERLAND_PORT }}
-        script: |
-          python manage.py runserver 0.0.0.0
+      - name: SSH Remote Commands
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.NETHERLAND_HOST }}
+          username: ${{ secrets.NETHERLAND_USERNAME }}
+          password: ${{ secrets.NETHERLAND_PASSWORD }}
+          port: ${{ secrets.NETHERLAND_PORT }}
+          script: |
+            python manage.py runserver 0.0.0.0
 
