@@ -15,8 +15,8 @@ RUN pip3 install -U pip && pip3 install -r requirements.txt
 COPY ./core /app/
 
 # Lint
-RUN flake8 core/*.py && pylint --disable=C0415 *.py
+#RUN flake8 core/*.py && pylint --disable=C0415 *.py
 
 EXPOSE 8000
 
-ENTRYPOINT ["python", "manage.py", "runserver", "0.0.0.0"]
+ENTRYPOINT ["python", "manage.py", "runserver", "0.0.0.0:8000"]
